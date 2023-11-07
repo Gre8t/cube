@@ -6,6 +6,16 @@ import (
 	"github.com/docker/go-connections/nat"
 	"github.com/google/uuid"
 )
+    
+type State int
+
+const (
+	Pending_State = iota
+	Scheduled
+	Running
+	Completed
+	Failed
+)
 
 type Task struct {
 	ID uuid.UUID
@@ -20,14 +30,10 @@ type Task struct {
 	StartTime time.Time
 	FinishTime time.Time
 }
-    
-type State int
 
-const (
-	Pending_State = iota
-	Scheduled
-	Running
-	Completed
-	Failed
-)
-    
+type TaskEvent struct {
+	ID uuid.UUID
+	State State
+	TimeStamp time.Time
+	Task Task
+}
