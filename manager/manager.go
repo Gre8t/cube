@@ -5,7 +5,7 @@ import (
 
 	"github.com/golang-collections/collections/queue"
 	"github.com/google/uuid"
-	"cube/task"
+	"github.com/gre8t/cube/task"
 )
 
 type Manager struct {
