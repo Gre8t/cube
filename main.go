@@ -14,11 +14,16 @@ import (
 
 func main() {
 	t := task.Task{
-		ID:   uuid.New(),
-		Name: "Task-1",
-		State: task.Pending,
-		Image: "Image-1",
-		Memory: 1024,
-		Disk: 1,
+		ID:            uuid.New(),
+		Name:          "Task-1",
+		State:         task.Pending,
+		Image:         "Image-1",
+		Memory:        1024,
+		Disk:          1,
+		ExposedPorts:  map[nat.Port]struct{}{},
+		PortBindings:  map[string]string{},
+		RestartPolicy: "",
+		StartTime:     time.Time{},
+		FinishTime:    time.Time{},
 	}
 }

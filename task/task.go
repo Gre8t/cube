@@ -10,7 +10,7 @@ import (
 type State int
 
 const (
-	Pending_State = iota
+	Pending State = iota
 	Scheduled
 	Running
 	Completed
