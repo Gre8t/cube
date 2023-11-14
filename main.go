@@ -1,17 +1,49 @@
 package main
 
 import (
-	"github.com/gre8t/cube/node"
-	"github.com/gre8t/cube/task"
 	"fmt"
 	"time"
 
-	"github.com/gre8t/cube/manager"
-	"github.com/gre8t/cube/worker"
+	"github.com/docker/docker/client"
+	"github.com/gre8t/cube/node"
+	"github.com/gre8t/cube/task"
+
 	"github.com/golang-collections/collections/queue"
 	"github.com/google/uuid"
+	"github.com/gre8t/cube/manager"
+	"github.com/gre8t/cube/worker"
 )
-
+func createContainer() (*task.DockerClient, *task.DockerResult) {
+	c := task.TaskConfig{
+		Name: "test-container-1",
+		Image: "postgres:13",
+		Env: []string{
+			"POSTGRES_USER=cube",
+			"POSTGRES_PASSWORD=secret",
+		},
+	}
+	dc, _ := client.NewClientWithOpts(client.FromEnv)
+	d := task.DockerClient {
+		Client: dc,
+		TaskConfig: c,
+	}
+	result := d.Run()
+	if result.Error != nil {
+		fmt.Printf ("%v\n", result.Error)
+		return nil, nil
+	}
+	fmt.Printf("Container %s is running with config %v\n", result.ContainerId, c)
+	return &d, &result
+}
+func stopContainer(d *task.DockerClient) *task.DockerResult {
+	result := d.Stop()
+	if result.Error != nil {
+		fmt.Printf("%v\n", result.Error)
+		return nil
+	}
+	fmt.Printf("Container %s has been stopped and removed\n", result.ContainerId, result.Result)
+	return &result
+}
 func main() {
 	t := task.Task{
 		ID:            uuid.New(),
