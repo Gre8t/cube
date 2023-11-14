@@ -137,5 +137,5 @@ func (d *DockerClient) Stop() DockerResult {
 		panic(err)
 	
 	}
-	return DockerResult{Action: "stop", Result: "success", Error: err, ContainerId: id}
+	return DockerResult{Action: "stop", Result: "success", Error: err, ContainerId: d.ContainerId}
 }
