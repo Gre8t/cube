@@ -83,7 +83,7 @@ func (d *DockerClient) Run() DockerResult {
 	io.Copy(os.Stdout, reader)
 
 	rp := container.RestartPolicy{
-		Name: d.TaskConfig.Name,
+		Name: d.TaskConfig.RestartPolicy,
 	}
 	r := container.Resources{
 		Memory: d.TaskConfig.Memory,
