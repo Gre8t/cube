@@ -2,16 +2,17 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"time"
 
-	"github.com/docker/docker/client"
+	"github.com/gre8t/cube/manager"
 	"github.com/gre8t/cube/node"
 	"github.com/gre8t/cube/task"
+	"github.com/gre8t/cube/worker"
 
+	"github.com/docker/docker/client"
 	"github.com/golang-collections/collections/queue"
 	"github.com/google/uuid"
-	"github.com/gre8t/cube/manager"
-	"github.com/gre8t/cube/worker"
 )
 func createContainer() (*task.DockerClient, *task.DockerResult) {
 	c := task.TaskConfig{
@@ -94,4 +95,13 @@ func main() {
 
 	}
 	fmt.Printf("node: %v\n", n)
+
+	dockerTask, createResult := createContainer()
+	if createResult.Error != nil {
+		fmt.Print(createResult.Error)
+		os.Exit(1)
+	}
+	time.Sleep(time.Second * 5)
+	fmt.Printf("Stopping container %s\n", createResult.ContainerId)
+	_ = stopContainer(dockerTask)
 }
